@@ -15,11 +15,14 @@ except FileNotFoundError:
     print("File_%s not found!" %(file_list[0]))
 else:
     wsr = wbr.active
+    wb = Workbook()
+    ws = wb.active
     time_1 = time.time()
     print("Open %s Pasted time %.3f s" %(file_list[0], time_1-time_start))
     for row in wsr.iter_rows(values_only=True):
         for cell in row:
             cell_dict = json.loads(cell)
-            print(cell_dict['first_connect_time'])
+            ws.append([cell_dict['softVersion'], cell_dict['endpointSerialCode'], cell_dict['first_connect_time']])
+    wb.save(file_dir+'HD'+file_list[0])
     time_2 = time.time()
     print("Pasted time %.3f s" %(time_2-time_1))
