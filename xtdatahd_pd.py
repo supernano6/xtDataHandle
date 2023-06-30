@@ -18,13 +18,15 @@ for n in  range(file_num):
     df = pd.read_excel(io=file_dir+file_list[n], sheet_name=0, header=None, names=['sn','vers','time','vsol','soc','tempb','temp'])
     sn_list = df.sn.unique()
     sn_num = len(sn_list)
-
+    print("%d/%d file handling..." %(n+1, file_num), end='\r')
     for i in range(sn_num):
         if os.path.exists(save_dir+sn_list[i]+".csv"):
             data_save = df[df['sn'] == sn_list[i]]
             data_save.to_csv(save_dir+sn_list[i]+".csv", mode='a', sep=',', header=False, index=False)
-            print(sn_list[i]+' saved')
+
         else:
             data_save = df[df['sn'] == sn_list[i]]
             data_save.to_csv(save_dir+sn_list[i]+".csv", sep=',', index=False)
-            print(sn_list[i]+' created')
+
+time_end = time.time()
+print("\nAll pasted %.3fs" %(time_end-time_start))
